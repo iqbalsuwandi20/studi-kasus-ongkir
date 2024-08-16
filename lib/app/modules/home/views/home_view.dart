@@ -158,6 +158,19 @@ class HomeView extends GetView<HomeController> {
                 controller.cityTujuanId.value = value?.cityId ?? "0",
           ),
           const SizedBox(height: 20),
+          TextField(
+            controller: controller.beratC,
+            autocorrect: false,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            decoration: const InputDecoration(
+              labelText: "Berat (gram)",
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 20),
           DropdownSearch<Map<String, dynamic>>(
             items: const [
               {
@@ -193,17 +206,27 @@ class HomeView extends GetView<HomeController> {
                 border: OutlineInputBorder(),
               ),
             ),
+            onChanged: (value) =>
+                controller.kodeKurir.value = value?["code"] ?? "",
           ),
           const SizedBox(height: 40),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pink,
-                shape: BeveledRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
-            onPressed: () {},
-            child: const Text(
-              "CEK ONGKOS KIRIM",
-              style: TextStyle(color: Colors.white),
+          Obx(
+            () => ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pink,
+                  shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+              onPressed: () {
+                if (controller.isLoading.isFalse) {
+                  controller.cekOngkir();
+                }
+              },
+              child: Text(
+                controller.isLoading.isFalse
+                    ? "CEK ONGKOS KIRIM"
+                    : "Tunggu ya, lagi loading",
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],
